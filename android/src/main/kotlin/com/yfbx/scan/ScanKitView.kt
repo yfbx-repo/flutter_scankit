@@ -126,7 +126,8 @@ class ScanKitView(
     override fun onMethodCall(call: MethodCall, result: MethodChannel.Result) {
         when (call.method) {
             "switchLight" -> {
-                camera?.cameraControl?.enableTorch(!enableTorch)
+                enableTorch = !enableTorch
+                camera?.cameraControl?.enableTorch(enableTorch)
             }
             else -> result.notImplemented()
         }
@@ -164,6 +165,8 @@ class ScanKitView(
     }
 
     override fun dispose() {
+        enableTorch = false
+        camera?.cameraControl?.enableTorch(false)
         cameraExecutor.shutdown()
         mChannel.setMethodCallHandler(null)
         mEvenChannel.setStreamHandler(null)
