@@ -4,10 +4,7 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.view.View
 import android.view.ViewGroup
-import androidx.camera.core.CameraSelector
-import androidx.camera.core.ImageAnalysis
-import androidx.camera.core.ImageProxy
-import androidx.camera.core.Preview
+import androidx.camera.core.*
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.camera.view.PreviewView
 import androidx.core.content.ContextCompat
@@ -49,6 +46,8 @@ class ScanKitView(
     private var mEvents: EventChannel.EventSink? = null
     private val previewView: PreviewView
     private val cameraExecutor = Executors.newSingleThreadExecutor()
+    private var camera: Camera? = null
+    private var enableTorch = false
 
     init {
         mChannel.setMethodCallHandler(this)
@@ -109,7 +108,7 @@ class ScanKitView(
             preview.setSurfaceProvider(surfaceProvider)
             val cameraProvider = cameraProviderFuture.get()
             cameraProvider.unbindAll()
-            cameraProvider.bindToLifecycle(
+            camera = cameraProvider.bindToLifecycle(
                 lifecycleOwner,
                 CameraSelector.DEFAULT_BACK_CAMERA,
                 preview,
@@ -127,7 +126,7 @@ class ScanKitView(
     override fun onMethodCall(call: MethodCall, result: MethodChannel.Result) {
         when (call.method) {
             "switchLight" -> {
-                //TODO: 闪光灯
+                camera?.cameraControl?.enableTorch(!enableTorch)
             }
             else -> result.notImplemented()
         }
@@ -148,7 +147,6 @@ class ScanKitView(
     override fun onStateChanged(source: LifecycleOwner, event: Lifecycle.Event) {
         when (event) {
             Lifecycle.Event.ON_CREATE -> {
-//                cameraExecutor = Executors.newSingleThreadExecutor()
             }
             Lifecycle.Event.ON_START -> {
             }
