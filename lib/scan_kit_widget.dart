@@ -69,13 +69,9 @@ class ScanKitController {
   ///
   void _eventHandler(event) {
     if (event == null) return;
-    final Map<dynamic, dynamic> map = event;
-    switch (map["event"]) {
-      case _ScanEvent.result:
-        _broadcast.add(map['value'].cast<String>());
-        break;
-      default:
-    }
+    final value = event as String;
+    final list = value.split(',').toList();
+    _broadcast.add(list);
   }
 
   ///
@@ -88,9 +84,4 @@ class ScanKitController {
   void dispose() {
     _eventSubscription.cancel();
   }
-}
-
-class _ScanEvent {
-  static const result = 0;
-  static const lightVisible = 1;
 }

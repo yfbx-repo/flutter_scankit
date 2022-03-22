@@ -15,8 +15,6 @@ class ScanKitViewFactory(
 
 
     override fun create(context: Context?, viewId: Int, args: Any?): PlatformView {
-        val reference = binding.lifecycle as HiddenLifecycleReference
-        val lifecycle = reference.lifecycle
-        return ScanKitView(messenger, binding.activity, lifecycle)
+        return ScanKitView(messenger, binding.activity)
     }
 }
