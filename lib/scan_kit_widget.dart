@@ -81,6 +81,10 @@ class ScanKitController {
     return await _channel.invokeMethod('switchLight');
   }
 
+  Future<void> setAnalyze(bool isAnalyze) async {
+    return await _channel.invokeMethod('setAnalyze', {'isAnalyze': isAnalyze});
+  }
+
   void dispose() {
     _eventSubscription.cancel();
   }

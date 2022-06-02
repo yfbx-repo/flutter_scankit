@@ -4,6 +4,7 @@ import android.app.Activity
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.FragmentActivity
+import com.google.mlkit.vision.barcode.BarcodeScannerOptions
 import com.google.mlkit.vision.barcode.common.Barcode
 import com.google.mlkit.vision.common.InputImage
 import com.kathline.barcode.CameraSourcePreview
@@ -65,6 +66,9 @@ class ScanKitView(
         when (call.method) {
             "switchLight" -> {
                 mlKit.switchLight()
+            }
+            "setAnalyze" -> {
+                mlKit.isAnalyze = call.argument<Boolean>("isAnalyze") ?: false
             }
             else -> result.notImplemented()
         }
