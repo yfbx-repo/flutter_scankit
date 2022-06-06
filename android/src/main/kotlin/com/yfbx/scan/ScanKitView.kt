@@ -83,6 +83,8 @@ class ScanKitView(
     }
 
     override fun dispose() {
+        preview.release()
+        mlKit.onDestroy()
         mChannel.setMethodCallHandler(null)
         mEvenChannel.setStreamHandler(null)
     }
